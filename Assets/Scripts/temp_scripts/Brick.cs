@@ -2,23 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(AnimationController))]
 public class Brick : MonoBehaviour {
 
 	public bool isUnbreakable;
 	public Sprite[] sprites;
 	public LevelManager levelManager;
+	public static int bricksLeft = 0;		// Count of bricks left unbroken
 
-	private int timesHit;					//Counts times of hits by ball. Also it works as an index of the current sprite
 	private SpriteRenderer spriteRenderer;
+	private int timesHit;					//Counts times of hits by ball. Also it works as an index of the current sprite
 	private float minPlaybackOffset	= 0.2f;
 	//Offset between the starting time of the previous and the current audio playback.
-
-	public static int bricksLeft = 0;		// Count of bricks left unbroken
 	private static float previousAudioStartTime;	//The time the previous explosion sound started the playback 
+	private AnimationController animationController;
 
 	// Use this for initialization
 	void Start ()
 	{
+		animationController = GetComponent<AnimationController>();
+
 		timesHit = 0;
 		previousAudioStartTime = 0;
 		spriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
@@ -39,7 +42,8 @@ public class Brick : MonoBehaviour {
 			timesHit++;
 			int maxHits = sprites.Length;
 			if (timesHit >= maxHits) {
-				Explosion();
+				PlayExplosionSound();
+				animationController.PlayAnimation("Explosion");
 				DestroyBrick();
 			} else {
 				//change sprite to the sprite of the next "hit" state
@@ -63,8 +67,8 @@ public class Brick : MonoBehaviour {
 		}
 	}
 
-	void Explosion ()
-	{
+
+	void PlayExplosionSound() {
 		//Play explosion sound (if appropriate time offset passed since the start of the previous playback)
 		if (Time.time - previousAudioStartTime >= minPlaybackOffset) 
 		{
@@ -72,13 +76,5 @@ public class Brick : MonoBehaviour {
 			//AudioSource.PlayClipAtPoint (GetComponent<AudioSource> ().clip, transform.position, 0.5f);
 			GetComponent<AudioSource> ().Play();
 		}
-
-		//Play explosion animation
-		Animator animator = GetComponentInChildren<Animator> ();
-		if (animator) {
-			animator.Play ("Explosion");
-			animator.transform.SetParent (null);
-		}
 	}
-
 }

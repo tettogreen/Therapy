@@ -41,8 +41,8 @@ public class Ball : MonoBehaviour {
 				isLaunched = true;
 			}
 		} else {
-			CheckStuck (transform.position.x, ref previousBallX, ref wasStuckX, ref lastStuckTimeX);
-			CheckStuck (transform.position.y, ref previousBallY, ref wasStuckY, ref lastStuckTimeY);
+//			CheckStuck (transform.position.x, ref previousBallX, ref wasStuckX, ref lastStuckTimeX);
+//			CheckStuck (transform.position.y, ref previousBallY, ref wasStuckY, ref lastStuckTimeY);
 		}
 
 
