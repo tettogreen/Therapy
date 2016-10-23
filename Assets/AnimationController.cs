@@ -17,7 +17,6 @@ public class AnimationController : MonoBehaviour {
 		//Play explosion animation
 		if (animator) {
 			animator.Play (animation);
-			AnimatorStateInfo obj = animator.GetCurrentAnimatorStateInfo(0);
 			animator.transform.SetParent (null);
 		}
 	}
