@@ -17,13 +17,6 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	void Update ()
-	{
-		if (Input.GetKeyDown (KeyCode.R)) {
-			SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);	
-		}
-	}
-
 
 	public void LoadLevel (string name)
 	{
@@ -46,15 +39,5 @@ public class LevelManager : MonoBehaviour {
 	}
 
 
-	public void BrickDestroyed ()
-	{
-		if (Brick.bricksLeft <= 0) {
-			Invoke ("LoadNextLevel", 2f);
-			Ball[] balls = FindObjectsOfType<Ball> ();
-			foreach (Ball ball in balls) {
-				//Destroy (ball.gameObject);
-				ball.DestroyBall();
-			}
-		}
-	} 
+
 }

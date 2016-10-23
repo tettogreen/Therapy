@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(AnimationController))]
+[RequireComponent(typeof(SoundController))]
 public class Ball : MonoBehaviour {
 
 	public float velocity;
@@ -8,15 +10,20 @@ public class Ball : MonoBehaviour {
 	private Paddle paddle; 
 	private Vector3 paddleToBallVector;
 
-	private Rigidbody2D rg;
 	private bool isLaunched = false;		
-	private float minPlaybackOffset	= 0.1f;	//Offset between the starting time of the previous and the current audio playback.
+	private Rigidbody2D rg;
 
+	private AnimationController animationController;
+	private SoundController soundController;
+
+	private float minPlaybackOffset	= 0.1f;	//Offset between the starting time of the previous and the current audio playback.
 	private static float previousAudioStartTime;	//The time the previous explosion sound started the playback 
 
 
 	// Use this for initialization
 	void Start () {
+		animationController = GetComponent<AnimationController>();
+		soundController = GetComponent<SoundController>();
 		paddle = GameObject.FindObjectOfType<Paddle>();
 		paddleToBallVector = transform.position - paddle.transform.position;
 		rg = gameObject.GetComponent<Rigidbody2D>();
@@ -48,21 +55,8 @@ public class Ball : MonoBehaviour {
 		//Play hit sound (if appropriate time offset passed since the start of the previous playback)
 		if (Time.time - previousAudioStartTime >= minPlaybackOffset) {
 			previousAudioStartTime = Time.time;
-			GetComponent<AudioSource> ().Play ();
+			soundController.PlaySound();
 		}
-	}
-
-
-	public void DestroyBall ()
-	{
-		//Play explosion animation
-		Animator animator = GetComponentInChildren<Animator> ();
-		if (animator) {
-			animator.Play ("Explosion");
-			animator.transform.SetParent (null);
-		}
-
-		Destroy(gameObject);
 	}
 
 
@@ -86,4 +80,8 @@ public class Ball : MonoBehaviour {
 		rg.velocity += tweakVelocity;
 	}
 
+	void OnDestroy ()
+	{
+		animationController.PlayAnimation("Explosion");
+	}
 }

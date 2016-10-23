@@ -8,7 +8,6 @@ public class Brick : MonoBehaviour {
 
 	public bool isUnbreakable;
 	public Sprite[] sprites;
-	public GameConroller levelManager;
 	public static int bricksLeft = 0;		// Count of bricks left unbroken
 
 	private SpriteRenderer spriteRenderer;
@@ -17,6 +16,7 @@ public class Brick : MonoBehaviour {
 
 	private AnimationController animationController;
 	private SoundController soundController;
+	private GameConroller gameController;
 
 	// Use this for initialization
 	void Start ()
@@ -24,6 +24,7 @@ public class Brick : MonoBehaviour {
 		
 		animationController = GetComponent<AnimationController>();
 		soundController = GetComponent<SoundController>();
+		gameController = FindObjectOfType<GameConroller>();
 		timesHit = 0;
 		spriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
 		spriteRenderer.sprite = sprites [0];
@@ -64,6 +65,6 @@ public class Brick : MonoBehaviour {
 
 	void OnDestroy () {
 	bricksLeft--;
-	levelManager.BrickDestroyed();
+	gameController.BrickDestroyed();
 	}
 }
