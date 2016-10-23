@@ -17,11 +17,20 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
+	void Update ()
+	{
+		if (Input.GetKeyDown (KeyCode.R)) {
+			SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);	
+		}
+	}
+
+
 	public void LoadLevel (string name)
 	{
 		Debug.Log (Time.time + ": Level load requested: " + name);
 		SceneManager.LoadScene(name);
 	}
+
 
 	public void QuitRequest()
 	{
@@ -29,12 +38,14 @@ public class LevelManager : MonoBehaviour {
 		Application.Quit();
 	}
 
+
 	public void LoadNextLevel ()
 	{
 		Debug.Log (Time.time + ": Loading next scene... ");
 		SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex + 1);
 	}
-	
+
+
 	public void BrickDestroyed ()
 	{
 		if (Brick.bricksLeft <= 0) {

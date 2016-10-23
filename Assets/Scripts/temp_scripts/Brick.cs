@@ -8,7 +8,7 @@ public class Brick : MonoBehaviour {
 
 	public bool isUnbreakable;
 	public Sprite[] sprites;
-	public LevelManager levelManager;
+	public GameConroller levelManager;
 	public static int bricksLeft = 0;		// Count of bricks left unbroken
 
 	private SpriteRenderer spriteRenderer;
@@ -45,7 +45,8 @@ public class Brick : MonoBehaviour {
 			if (timesHit >= maxHits) {
 				soundController.PlaySound();
 				animationController.PlayAnimation("Explosion");
-				DestroyBrick();
+				GetComponent<BoxCollider2D>().enabled = false;	//disabling collider to avoid double-hit of a brick during animation
+				Destroy(gameObject, 0.5f);
 			} else {
 				//change sprite to the sprite of the next "hit" state
 				LoadNextSprite();
@@ -53,13 +54,6 @@ public class Brick : MonoBehaviour {
 		}
 	}
 
-	void DestroyBrick ()
-	{
-		bricksLeft--;
-		levelManager.BrickDestroyed();
-		Destroy (gameObject, 0.5f);
-		GetComponent<BoxCollider2D>().enabled = false;	//disabling collider to avoid double-hit of a brick during animation
-	}
 
 	void LoadNextSprite ()
 	{
@@ -68,4 +62,8 @@ public class Brick : MonoBehaviour {
 		}
 	}
 
+	void OnDestroy () {
+	bricksLeft--;
+	levelManager.BrickDestroyed();
+	}
 }

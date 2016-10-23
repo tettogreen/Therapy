@@ -13,4 +13,16 @@ public class GameConroller : MonoBehaviour {
 		}
 
 	}
+
+	public void BrickDestroyed ()
+	{
+		if (Brick.bricksLeft <= 0) {
+			Invoke ("LoadNextLevel", 2f);
+			Ball[] balls = GameObject.FindGameObjectsWithTag("Ball");
+			foreach (Ball ball in balls) {
+				//Destroy (ball.gameObject);
+				ball.DestroyBall();
+			}
+		}
+	} 
 }
