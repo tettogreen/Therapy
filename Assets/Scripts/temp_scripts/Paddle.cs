@@ -28,7 +28,7 @@ public class Paddle : MonoBehaviour {
 
 	public void Destroy ()
 	{	
-		animationController.PlayAnimation("Explosion");
+		animationController.PlayAnimation("PaddleDestroy");
 	}
 
 
