@@ -43,6 +43,10 @@ public class Ball : MonoBehaviour {
 		} else {
 //			CheckStuck (transform.position.x, ref previousBallX, ref wasStuckX, ref lastStuckTimeX);
 //			CheckStuck (transform.position.y, ref previousBallY, ref wasStuckY, ref lastStuckTimeY);
+
+			if (rg.velocity.magnitude != velocity) {
+				rg.velocity = rg.velocity.normalized * velocity;
+			}
 		}
 
 

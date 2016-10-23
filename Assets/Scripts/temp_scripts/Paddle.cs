@@ -17,13 +17,13 @@ public class Paddle : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	void FixedUpdate ()
 	{
 		if (Input.GetKey (KeyCode.LeftArrow))
-			rigid.AddForce (Vector3.left * accelerationForce, ForceMode2D.Force);
+			rigid.AddForce (Vector3.left * accelerationForce, ForceMode2D.Impulse);
 
 		if (Input.GetKey (KeyCode.RightArrow))
-			rigid.AddForce (Vector3.right * accelerationForce, ForceMode2D.Force);
+			rigid.AddForce (Vector3.right * accelerationForce, ForceMode2D.Impulse);
 	}
 
 	public void Destroy ()

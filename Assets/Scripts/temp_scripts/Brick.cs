@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(AnimationController))]
+[RequireComponent(typeof(SoundController))]
 public class Brick : MonoBehaviour {
 
 	public bool isUnbreakable;
@@ -12,18 +13,18 @@ public class Brick : MonoBehaviour {
 
 	private SpriteRenderer spriteRenderer;
 	private int timesHit;					//Counts times of hits by ball. Also it works as an index of the current sprite
-	private float minPlaybackOffset	= 0.2f;
-	//Offset between the starting time of the previous and the current audio playback.
-	private static float previousAudioStartTime;	//The time the previous explosion sound started the playback 
+
+
 	private AnimationController animationController;
+	private SoundController soundController;
 
 	// Use this for initialization
 	void Start ()
 	{
+		
 		animationController = GetComponent<AnimationController>();
-
+		soundController = GetComponent<SoundController>();
 		timesHit = 0;
-		previousAudioStartTime = 0;
 		spriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
 		spriteRenderer.sprite = sprites [0];
 		if (!isUnbreakable) {
@@ -42,7 +43,7 @@ public class Brick : MonoBehaviour {
 			timesHit++;
 			int maxHits = sprites.Length;
 			if (timesHit >= maxHits) {
-				PlayExplosionSound();
+				soundController.PlaySound();
 				animationController.PlayAnimation("Explosion");
 				DestroyBrick();
 			} else {
@@ -67,14 +68,4 @@ public class Brick : MonoBehaviour {
 		}
 	}
 
-
-	void PlayExplosionSound() {
-		//Play explosion sound (if appropriate time offset passed since the start of the previous playback)
-		if (Time.time - previousAudioStartTime >= minPlaybackOffset) 
-		{
-			previousAudioStartTime = Time.time;
-			//AudioSource.PlayClipAtPoint (GetComponent<AudioSource> ().clip, transform.position, 0.5f);
-			GetComponent<AudioSource> ().Play();
-		}
-	}
 }
