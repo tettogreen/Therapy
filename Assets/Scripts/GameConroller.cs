@@ -4,6 +4,18 @@ using System.Collections;
 
 public class GameConroller : MonoBehaviour {
 
+	public static GameConroller instance = null;
+
+	void Awake ()
+	{
+		if (instance != null) {
+			Destroy (gameObject);
+			Debug.Log (Time.time + ": Duplicated copy of Level Manager was destroyed");
+		} else {
+			instance = this;
+			GameObject.DontDestroyOnLoad(gameObject);
+		}
+	}
 
 	void Update ()
 	{
