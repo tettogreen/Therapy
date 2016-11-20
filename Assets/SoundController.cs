@@ -13,7 +13,7 @@ public class SoundController : MonoBehaviour {
 	//Play AudioSource sound (if appropriate time offset passed since the start of the previous playback)
 	public void PlaySound ()
 	{
-		AudioClip currentSound = GetComponentInChildren<AudioSource> ().clip;
+		AudioClip currentSound = GetComponent<AudioSource> ().clip;
 		float clipPreviousStartTime = GetClipsPreviousStartTime (currentSound);
 		if (TimeOffsetPassedSince(clipPreviousStartTime)) 
 		{

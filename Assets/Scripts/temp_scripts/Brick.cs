@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(AnimationController))]
 [RequireComponent(typeof(SoundController))]
+[RequireComponent(typeof(BoxCollider2D))]
 public class Brick : MonoBehaviour {
 
 	public bool isUnbreakable;
@@ -14,23 +15,29 @@ public class Brick : MonoBehaviour {
 	private int timesHit;					//Counts times of hits by ball. Also it works as an index of the current sprite
 
 
-	private AnimationController animationController;
+	private Animator animator;
 	private SoundController soundController;
 	private GameConroller gameController;
+	private BoxCollider2D collider;
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
 	{
-		
-		animationController = GetComponent<AnimationController>();
+		animator = GetComponent<Animator>();
+		spriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
+		collider = GetComponent<BoxCollider2D>();
 		soundController = GetComponent<SoundController>();
 		gameController = FindObjectOfType<GameConroller>();
 		timesHit = 0;
-		spriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
 		spriteRenderer.sprite = sprites [0];
+	}
+
+	void Start ()
+	{
 		if (!isUnbreakable) {
 			bricksLeft++;
 		}
+		
 	}
 
 
@@ -45,9 +52,8 @@ public class Brick : MonoBehaviour {
 			int maxHits = sprites.Length;
 			if (timesHit >= maxHits) {
 				soundController.PlaySound();
-				animationController.PlayAnimation("Explosion");
-				GetComponent<BoxCollider2D>().enabled = false;	//disabling collider to avoid double-hit of a brick during animation
-				Destroy(gameObject, 0.5f);
+				collider.enabled = false;	//disabling collider to avoid double-hit of a brick during animation
+				this.Destroy();
 			} else {
 				//change sprite to the sprite of the next "hit" state
 				LoadNextSprite();
@@ -63,8 +69,14 @@ public class Brick : MonoBehaviour {
 		}
 	}
 
-	void OnDestroy () {
+	void Destroy () {
 	bricksLeft--;
 	gameController.BrickDestroyed();
+	animator.SetTrigger("Explosion");
+	}
+
+	void OnEnable ()
+	{
+		collider.enabled = true;
 	}
 }

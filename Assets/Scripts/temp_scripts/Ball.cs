@@ -43,7 +43,7 @@ public class Ball : MonoBehaviour {
 
 		} else {
 			ChangeVelocity(velocity);
-			RandomTweak();
+//			RandomTweak();
 		}
 
 
