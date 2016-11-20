@@ -18,14 +18,14 @@ public class Brick : MonoBehaviour {
 	private Animator animator;
 	private SoundController soundController;
 	private GameConroller gameController;
-	private BoxCollider2D collider;
+	private BoxCollider2D brickCollider;
 
 	// Use this for initialization
 	void Awake ()
 	{
 		animator = GetComponent<Animator>();
 		spriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
-		collider = GetComponent<BoxCollider2D>();
+		brickCollider = GetComponent<BoxCollider2D>();
 		soundController = GetComponent<SoundController>();
 		gameController = FindObjectOfType<GameConroller>();
 		timesHit = 0;
@@ -34,10 +34,9 @@ public class Brick : MonoBehaviour {
 
 	void Start ()
 	{
-		if (!isUnbreakable) {
+		if (CompareTag("DestructibleBrick")) {
 			bricksLeft++;
 		}
-		
 	}
 
 
@@ -47,12 +46,12 @@ public class Brick : MonoBehaviour {
 		Debug.Log (Time.time + "BRICK HIT!");
 
 		//handling hits if the block is breakable, otherwise ignore it
-		if (!isUnbreakable) {
+		if (!CompareTag("UnbreakableBrick")) {
 			timesHit++;
 			int maxHits = sprites.Length;
 			if (timesHit >= maxHits) {
 				soundController.PlaySound();
-				collider.enabled = false;	//disabling collider to avoid double-hit of a brick during animation
+				brickCollider.enabled = false;	//disabling collider to avoid double-hit of a brick during animation
 				this.Destroy();
 			} else {
 				//change sprite to the sprite of the next "hit" state
@@ -69,14 +68,17 @@ public class Brick : MonoBehaviour {
 		}
 	}
 
-	void Destroy () {
-	bricksLeft--;
-	gameController.BrickDestroyed();
-	animator.SetTrigger("Explosion");
+	void Destroy ()
+	{
+		if (CompareTag ("DestructibleBrick")) {
+			bricksLeft--;
+			gameController.BrickDestroyed ();
+		}
+		animator.SetTrigger("Explosion");
 	}
 
 	void OnEnable ()
 	{
-		collider.enabled = true;
+		brickCollider.enabled = true;
 	}
 }
