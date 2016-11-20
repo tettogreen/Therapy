@@ -2,21 +2,21 @@
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(AnimationController))]
+[RequireComponent(typeof(Animator))]
 public class Paddle : MonoBehaviour {
 
 	public float accelerationForce, maxAcceleration; 
 	public bool ControlledByAI;
 
-	private AnimationController animationController;
 	private Rigidbody2D rigid;
 	private GameObject ball;
+	private Animator animator;
 
 
 	// Use this for initialization
 	void Start ()
 	{
-		animationController = GetComponent<AnimationController> ();
+		animator = GetComponent<Animator> ();
 		rigid = GetComponent<Rigidbody2D> ();
 
 		if (ControlledByAI) {
@@ -38,7 +38,7 @@ public class Paddle : MonoBehaviour {
 
 	public void Destroy ()
 	{	
-		animationController.PlayAnimation("PaddleDestroy");
+		animator.SetTrigger("Lose");
 	}
 
 
