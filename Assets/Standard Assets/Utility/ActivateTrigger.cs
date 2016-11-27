@@ -22,10 +22,10 @@ namespace UnityStandardAssets.Utility
         public Object target;                       // The game object to affect. If none, the trigger work on this game object
         public GameObject source;
         public int triggerCount = 1;
-        public bool repeatTrigger = false;
+        public bool repeatTrigger = true;
 
 
-        private void DoActivateTrigger()
+        protected void DoActivateTrigger()
         {
             triggerCount--;
 
@@ -85,11 +85,6 @@ namespace UnityStandardAssets.Utility
                 }
             }
         }
-
-
-        private void OnTriggerEnter(Collider other)
-        {
-            DoActivateTrigger();
-        }
+       
     }
 }
