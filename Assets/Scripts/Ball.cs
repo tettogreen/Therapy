@@ -3,6 +3,8 @@ using System.Collections;
 
 [RequireComponent(typeof(AnimationController))]
 [RequireComponent(typeof(SoundController))]
+[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class Ball : MonoBehaviour {
 
 	public float velocity;
@@ -10,30 +12,35 @@ public class Ball : MonoBehaviour {
 	private Paddle paddle; 
 	private Vector3 paddleToBallVector;
 
-	private bool isLaunched = false;		
 	private Rigidbody2D rg;
+	private Collider2D collider2d;
 
-	private AnimationController animationController;
+	private Animator animator;
 	private SoundController soundController;
 
 	private float minPlaybackOffset	= 0.1f;	//Offset between the starting time of the previous and the current audio playback.
 	private static float previousAudioStartTime;	//The time the previous explosion sound started the playback 
 
 
-	// Use this for initialization
-	void Start () {
-		animationController = GetComponent<AnimationController>();
+	void Awake() {
+		animator = GetComponent<Animator>();
 		soundController = GetComponent<SoundController>();
-		paddle = GameObject.FindObjectOfType<Paddle>();
-		paddleToBallVector = transform.position - paddle.transform.position;
-		rg = gameObject.GetComponent<Rigidbody2D>();
+		rg = GetComponent<Rigidbody2D>();
+		collider2d = GetComponent<Collider2D>();
 	}
 
+	// Use this for initialization
+	void Start () {
+
+		paddle = GameObject.FindObjectOfType<Paddle>();
+		paddleToBallVector = transform.position - paddle.transform.position;
+	}
 
 	// Update is called once per frame
 	void Update ()
 	{
-		if (!isLaunched) {
+		
+		if (!animator.GetBool("isLaunched")) {
 
 			//lock the ball to the paddle
 			transform.position = paddle.transform.position + paddleToBallVector;
@@ -49,7 +56,6 @@ public class Ball : MonoBehaviour {
 
 	}
 
-
 	void OnCollisionEnter2D (Collision2D collision)
 	{
 		//Play hit sound (if appropriate time offset passed since the start of the previous playback)
@@ -60,10 +66,22 @@ public class Ball : MonoBehaviour {
 	}
 
 
+
+
+	public void Destroy ()
+	{
+		collider2d.enabled = false;
+		ChangeVelocity(0f);
+		animator.SetTrigger("Explosion");
+	}
+
+
+
 	void Launch ()
 	{
+		collider2d.enabled = true;
 		rg.velocity = new Vector2 (0f, velocity);
-		isLaunched = true;
+		animator.SetBool("isLaunched", true);
 	}
 
 	void ChangeVelocity (float targetVelocity)
@@ -80,8 +98,5 @@ public class Ball : MonoBehaviour {
 		rg.velocity += tweakVelocity;
 	}
 
-	void OnDestroy ()
-	{
-		animationController.PlayAnimation("Explosion");
-	}
+
 }

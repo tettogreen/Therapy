@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LoseCollider : MonoBehaviour
+public class LevelLoseCollider : MonoBehaviour
 {
 
 	public Paddle paddle;
