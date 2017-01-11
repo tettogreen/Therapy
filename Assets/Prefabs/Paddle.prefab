@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 61000011307189092}
   - component: {fileID: 231000013577775570}
   - component: {fileID: 11465396}
-  - component: {fileID: 114454411442465618}
   m_Layer: 0
   m_Name: Paddle
   m_TagString: Paddle
@@ -29,7 +28,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165072}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.042000055, y: -4.081, z: -1}
+  m_LocalPosition: {x: -0.987, y: -4.226, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4000012540908692}
@@ -67,6 +66,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bffbca59b8d70466daa24374cae88f58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VerticalOffset: 75
+  accelerationForce: 5
+  controlledByAI: 0
+  stickToPaddle: 0
+  playerBall: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -102,7 +106,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010113804114}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.82, z: 0}
+  m_LocalPosition: {x: -0.013, y: 1.82, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 476144}
@@ -139,9 +143,9 @@ BoxCollider2D:
   m_Material: {fileID: 6200000, guid: d57c2da28512b46038865757517f634f, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: -0.022266686, y: -0.07599926}
+  m_Offset: {x: -0.01, y: -0.02}
   serializedVersion: 2
-  m_Size: {x: 1.5195948, y: 0.15133631}
+  m_Size: {x: 1.5, y: 0.15}
 --- !u!95 &95966835482926426
 Animator:
   serializedVersion: 3
@@ -172,22 +176,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xIsLocked: 0
   yIsLocked: 1
---- !u!114 &114454411442465618
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 165072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 763cee2c84da9432f8362a84ee7149a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
-  VerticalOffset: 25
-  accelerationForce: 5
-  controlledByAI: 1
-  ball: {fileID: 0}
 --- !u!212 &212632659054381784
 SpriteRenderer:
   m_ObjectHideFlags: 1

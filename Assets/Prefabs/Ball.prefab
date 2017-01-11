@@ -30,7 +30,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 138114}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.12, y: -2.19, z: 0}
+  m_LocalPosition: {x: -0.42, y: -3.97, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4000013958016434}
@@ -63,8 +63,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e18adde1a3ac04cab909c9c920537147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 9
-  stickToPaddle: 0
+  velocity: 4
+  isLocked: 1
 --- !u!212 &21263194
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -182,7 +182,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.14522013
-  m_LinearDrag: 10
+  m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 1
   m_Material: {fileID: 0}
