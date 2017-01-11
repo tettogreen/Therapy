@@ -6,8 +6,8 @@ namespace UnityStandardAssets.Utility
 	[RequireComponent(typeof(Rigidbody2D))]
     public class AutoMoveAndRotate : MonoBehaviour
     {
-        public Vector2andSpace moveForce;
-        public Vector2andSpace rotateDegreesPerSecond;
+        public Vector3andSpace moveForce;
+        public Vector3andSpace rotateDegreesPerSecond;
 //        public bool ignoreTimescale;
 //        private float m_LastRealTime;
 		public float directionChangeTime;
@@ -52,9 +52,9 @@ namespace UnityStandardAssets.Utility
         }
 
         [Serializable]
-        public class Vector2andSpace
+        public class Vector3andSpace
         {
-            public Vector2 value;
+            public Vector3 value;
             public Space space = Space.Self;
         }
 
