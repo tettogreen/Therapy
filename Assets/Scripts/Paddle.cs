@@ -6,16 +6,17 @@ using System.Collections;
 public class Paddle : MonoBehaviour {
 
 
-	public float VerticalOffset;	//Vertical offset above which there will be no movement in pixels
+	public float AimingAreaOffset;	//Vertical offset between paddle and aiming area above which there will be no movement
 	public float accelerationForce;
 	public bool controlledByAI;
 	public bool stickToPaddle;
+	public bool aimedShootingMode;
 	public Ball playerBall;
 
 
 	Camera mainCamera;
 	Rigidbody2D rigid;
-	float maximumMouseHeight;
+	float aimingAreaLine; 		//height of the screen above which GetMouseButtonUp() will invoke aimed shooting
 
 	private Animator animator;
 
@@ -31,11 +32,11 @@ public class Paddle : MonoBehaviour {
 		mainCamera = Camera.main;
 
 
-		//Calculating the line above which LaunchBall method will be invoked and below which MovePaddle will be invoked.
+		//Calculating the line above which AimedLaunch() method will be invoked and below which MovePaddle will be invoked.
 		Vector3 position = mainCamera.WorldToScreenPoint(transform.position);
-		maximumMouseHeight =  position.y + VerticalOffset;
+		aimingAreaLine =  position.y + AimingAreaOffset;
 
-		lockedPosition = CalculateRelativeDirection(playerBall.gameObject);		//default position of the ball
+		lockedPosition = CalculateRelativeDirection(playerBall.gameObject.transform.position);		//default position of the ball
 	}
 
 	void FixedUpdate ()
@@ -49,7 +50,7 @@ public class Paddle : MonoBehaviour {
 		// Lock the ball to the paddle
 		if (playerBall.isLocked)
 			playerBall.Follow (gameObject, lockedPosition);
-
+		// Launch the ball
 		if (playerBall.isLocked && Input.GetMouseButtonUp (0))
 			Launch (playerBall);
 	}
@@ -58,7 +59,7 @@ public class Paddle : MonoBehaviour {
 	{
 		if (collision.gameObject.tag == "Ball") {
 			Ball collidedBall = collision.gameObject.GetComponent<Ball>();
-			Vector2 direction = CalculateRelativeDirection(collision.gameObject);
+			Vector2 direction = CalculateRelativeDirection(collision.gameObject.transform.position);
 			if (stickToPaddle)
 				Lock (collidedBall);
 			else if (direction.y > InteractiveHeight) //Preventing the ball from stucking in boring loop
@@ -68,7 +69,7 @@ public class Paddle : MonoBehaviour {
 
 	void MoveWithTouch ()
 	{
-		if (Input.GetMouseButton (0) && Input.mousePosition.y <= maximumMouseHeight) 
+		if (Input.GetMouseButton (0) && Input.mousePosition.y <= aimingAreaLine) 
 			MoveToThePoint (mainCamera.ScreenToWorldPoint(Input.mousePosition), 0.1f);
 	}
 
@@ -89,23 +90,30 @@ public class Paddle : MonoBehaviour {
 
 	void Launch (Ball ball)
 	{
-//		if (Input.mousePosition.y > maximumMouseHeight && Input.GetMouseButtonUp(0)) 
-			// Calculating bounce 
-			Vector2 direction = CalculateRelativeDirection(ball.gameObject);
-			ball.Launch (direction);
+		Vector2 direction;
+
+		// Calculating bounce according to shooting mode
+		if (aimedShootingMode && Input.mousePosition.y > aimingAreaLine) {
+			Vector2 mousePosition = mainCamera.ScreenToWorldPoint (Input.mousePosition);
+			direction = CalculateRelativeDirection (mousePosition);
+		}
+		else
+			direction = CalculateRelativeDirection (ball.gameObject.transform.position);
+		ball.Launch (direction);
 	}
 
 	void Lock (Ball ball)
 	{
-		Vector2 relativePosition = CalculateRelativeDirection (ball.gameObject);
-		if (relativePosition.y > InteractiveHeight)	
+		Vector2 relativePosition = CalculateRelativeDirection (ball.gameObject.transform.position);
+		if (relativePosition.y > InteractiveHeight) {
 			lockedPosition = relativePosition;
 			ball.Stop ();
+		}
 	}
 
 
-	Vector2 CalculateRelativeDirection (GameObject target) {
-		return target.transform.position - transform.position;
+	Vector2 CalculateRelativeDirection (Vector3 target) {
+		return target - transform.position;
 	}
 
 	public void Destroy ()

@@ -2018,6 +2018,10 @@ Prefab:
       propertyPath: playerBall
       value: 
       objectReference: {fileID: 314774509}
+    - target: {fileID: 11465396, guid: 19cc15b5c7ac34822b39ba7f77f25a43, type: 2}
+      propertyPath: aimedShootingMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 19cc15b5c7ac34822b39ba7f77f25a43, type: 2}
   m_IsPrefabParent: 0
